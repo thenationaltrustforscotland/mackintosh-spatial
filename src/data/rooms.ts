@@ -2,11 +2,30 @@ import bedroom from '../assets/rooms/bedroom.avif'
 import drawingRoom from '../assets/rooms/drawing-room.avif'
 import hall from '../assets/rooms/hall.avif'
 import windowSeat from '../assets/rooms/window-seat.avif'
-import type { BrowseObject, Room } from './types'
+import type { BrowseObject, Room, TimelineEvent } from './types'
 
-/** Object records without detailUrl (derived below from id). */
-type RawObject = Omit<Room['objects'][number], 'detailUrl'>
+/** Object records without derived fields (detailUrl, year added below). */
+type RawObject = Omit<Room['objects'][number], 'detailUrl' | 'year'>
 type RawRoom = Omit<Room, 'objects'> & { objects: RawObject[] }
+
+/** Approximate years per object, spread across the Hill House commission so the
+ *  timeline has shape. Placeholder until real creation dates are available. */
+const objectYears: Record<string, number> = {
+  'hh-hall-bench': 1904,
+  'hh-hall-table': 1904,
+  'hh-hall-lantern': 1905,
+  'hh-hall-panels': 1904,
+  'hh-bed-panels': 1903,
+  'hh-bed-wardrobe': 1904,
+  'hh-bed-chair': 1904,
+  'hh-dr-chairs': 1905,
+  'hh-dr-table': 1906,
+  'hh-dr-window': 1904,
+  'hh-dr-books': 1900,
+  'hh-ws-seat': 1904,
+  'hh-ws-curtains': 1903,
+  'hh-ws-stencil': 1904,
+}
 
 /** Mock fixtures over real Hill House interior photos. Hotspot coords are
  *  percentages of each image, eyeballed to sit on the object. Records are
@@ -177,6 +196,20 @@ const rawRooms: RawRoom[] = [
         makerKey: 'mackintosh',
         tags: ['built-in', 'window', 'rose'],
       },
+      {
+        id: 'hh-dr-books',
+        accession: 'NTS.HH.33',
+        title: 'Blackie & Son bound volumes',
+        maker: 'Blackie and Son (publishers)',
+        date: 'c. 1900',
+        description:
+          'Cloth-bound books published by Walter Blackie’s firm and kept in the drawing-room shelves. They belonged to the Blackie family rather than being designed for the house, a reminder that the interiors held the family’s own possessions too.',
+        credit: 'National Trust for Scotland, The Hill House',
+        licence: 'CC BY',
+        hotspot: { x: 78, y: 55 },
+        makerKey: 'blackie',
+        tags: ['books', 'blackie-family'],
+      },
     ],
   },
   {
@@ -239,6 +272,7 @@ export const rooms: Room[] = rawRooms.map((room) => ({
   objects: room.objects.map((object) => ({
     ...object,
     detailUrl: `/collections/object/${object.id}`,
+    year: objectYears[object.id] ?? 1904,
   })),
 }))
 
@@ -261,6 +295,12 @@ export const trails: {
     match: (o) => o.makerKey === 'macdonald' || o.makerKey === 'joint',
   },
   {
+    id: 'blackie',
+    label: 'The Blackie family',
+    blurb: 'Objects that belonged to the Blackie family, rather than being designed for the house.',
+    match: (o) => o.makerKey === 'blackie',
+  },
+  {
     id: 'geometry',
     label: 'Geometry & the grid',
     blurb: 'The square, the lattice, the cube: Mackintosh’s geometric vocabulary.',
@@ -277,5 +317,68 @@ export const trails: {
     label: 'Built for the house',
     blurb: 'Fitted furniture and built-in pieces made for these rooms.',
     match: (o) => o.tags.includes('built-in'),
+  },
+]
+
+/** Contextual life and world events for the timeline. Dates are drawn from
+ *  published sources (Wikipedia, NTS, CRM Society); wording is placeholder
+ *  pending the project's interpretation strategy. Mixing collection with
+ *  real-world context mirrors the existing Relationship Explorer. */
+export const timelineEvents: TimelineEvent[] = [
+  {
+    id: 'ev-marriage',
+    year: 1900,
+    date: '22 August 1900',
+    kind: 'life',
+    title: 'Charles Rennie Mackintosh and Margaret Macdonald marry in Dumbarton.',
+  },
+  {
+    id: 'ev-artlover',
+    year: 1901,
+    date: '1901',
+    kind: 'life',
+    title: 'The couple design “House for an Art Lover” for a German competition.',
+  },
+  {
+    id: 'ev-victoria',
+    year: 1901,
+    date: '22 January 1901',
+    kind: 'world',
+    title: 'Queen Victoria dies; Edward VII accedes to the throne.',
+  },
+  {
+    id: 'ev-commission',
+    year: 1902,
+    date: '1902',
+    kind: 'life',
+    title: 'Publisher Walter Blackie commissions Mackintosh to design The Hill House.',
+  },
+  {
+    id: 'ev-turin',
+    year: 1903,
+    date: '1903',
+    kind: 'life',
+    title: 'Mackintosh and Macdonald show the Rose Boudoir at the Turin International Exhibition.',
+  },
+  {
+    id: 'ev-flight',
+    year: 1903,
+    date: '17 December 1903',
+    kind: 'world',
+    title: 'The Wright brothers make the first powered flight at Kitty Hawk.',
+  },
+  {
+    id: 'ev-moved-in',
+    year: 1904,
+    date: '1904',
+    kind: 'life',
+    title: 'The Blackie family moves into the completed Hill House.',
+  },
+  {
+    id: 'ev-relativity',
+    year: 1905,
+    date: '1905',
+    kind: 'world',
+    title: 'Einstein publishes his theory of special relativity.',
   },
 ]

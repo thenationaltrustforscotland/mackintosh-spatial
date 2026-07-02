@@ -21,6 +21,17 @@ export interface CollectionObject {
   makerKey: 'mackintosh' | 'macdonald' | 'joint' | 'blackie'
   /** Motif/theme tags, used to build discovery trails. */
   tags: string[]
+  /** Sortable year for the timeline (approximate for circa dates). */
+  year: number
+}
+
+/** A contextual event (life or world), plotted alongside objects on the timeline. */
+export interface TimelineEvent {
+  id: string
+  year: number
+  date: string
+  kind: 'life' | 'world'
+  title: string
 }
 
 /** An object flattened out of its room, for cross-room browsing prototypes. */

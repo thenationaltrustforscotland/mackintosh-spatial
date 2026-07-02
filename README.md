@@ -27,6 +27,16 @@ A small gallery of prototypes, reached from an index page (`#/`):
 - Themed trails (Margaret Macdonald, the rose motif, geometry, built-in pieces)
   that filter a grid of every object
 
+**Timeline** (`#/timeline`) — objects and their context on one axis:
+
+- Loads populated immediately (no gating on picking two people, unlike the
+  existing Relationship Explorer)
+- Interleaves collection objects with life and world events (1900–1906)
+- Relationship views (by date, maker, room, motif) relabel each object
+
+The whole app uses a light theme matching the NTS website (air background,
+charcoal text, berry and forest/teal accents), with WCAG AA contrast throughout.
+
 ## Stack
 
 Vite · React 19 · TypeScript · Tailwind CSS v4 · Biome
@@ -68,14 +78,15 @@ Deployed to GitHub Pages on every push to `main` via
 
 | Path                         | Purpose                                       |
 | ---------------------------- | --------------------------------------------- |
-| `src/App.tsx`                | Hash router: index / spatial / browse         |
+| `src/App.tsx`                | Hash router: index / spatial / browse / timeline |
 | `src/views/IndexPage`        | Prototype gallery landing page                |
 | `src/views/SpatialView`      | Spatial prototype (rooms + hotspots + panel)  |
 | `src/views/BrowseView`       | Discover prototype (surprise me + trails)     |
+| `src/views/TimelineView`     | Timeline prototype (objects + events + relationships) |
 | `src/components/RoomView`    | Room image + blurhash + hotspot overlay       |
 | `src/components/Hotspot`     | A single clickable marker                     |
 | `src/components/ObjectPanel` | Slide-in object detail panel                  |
 | `src/components/ObjectCard`  | Object thumbnail card used in Browse          |
-| `src/data/rooms.ts`          | Mock fixtures, flattened objects, trails      |
-| `src/data/types.ts`          | `Room` / `CollectionObject` / `BrowseObject`  |
+| `src/data/rooms.ts`          | Fixtures, flattened objects, trails, timeline events |
+| `src/data/types.ts`          | `Room` / `CollectionObject` / `BrowseObject` / `TimelineEvent` |
 | `src/assets/rooms/`          | Hill House interior photos                    |

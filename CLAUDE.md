@@ -13,6 +13,11 @@ collection. Mock data only. Not production code.
 - `#/` → `IndexPage` (lists the prototypes)
 - `#/spatial[/room/object]` → `SpatialView` (room photos + object hotspots)
 - `#/browse` → `BrowseView` ("surprise me" + themed trails)
+- `#/timeline` → `TimelineView` (objects + life/world events on one axis)
+
+The app uses a light theme (air bg, charcoal text, berry + forest/teal accents),
+matching the NTS website. Keep contrast AA: never use `mist`/`granite` for text on
+light; use `slate` for muted text.
 
 Views live in `src/views/`, shared pieces in `src/components/`. Add a prototype by
 adding a view, a route branch in `App.tsx`, and a card in `IndexPage`.

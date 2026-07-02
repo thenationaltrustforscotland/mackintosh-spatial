@@ -54,7 +54,7 @@ export function SpatialView() {
   }, [closePanel])
 
   return (
-    <div className="flex min-h-full flex-col bg-charcoal text-air">
+    <div className="flex min-h-full flex-col bg-air text-charcoal">
       <a
         href="#room"
         className="sr-only rounded bg-ice px-4 py-2 font-bold text-charcoal focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-30 focus:h-auto focus:w-auto focus:overflow-visible focus:whitespace-normal"
@@ -65,12 +65,12 @@ export function SpatialView() {
       <div className="contents" inert={selected !== null ? true : undefined}>
         <header className="px-4 pt-6 pb-3 text-center sm:px-6 sm:pt-8 sm:pb-4">
           <BackToIndex />
-          <p className="mt-4 text-sm font-bold tracking-[0.3em] text-gold uppercase">
+          <p className="mt-4 text-sm font-bold tracking-[0.3em] text-berry uppercase">
             Mackintosh Illuminated
           </p>
-          <h1 className="mt-2 text-3xl font-bold sm:text-4xl">{room.name}</h1>
-          <p className="mt-1 text-mist">{room.property}</p>
-          <p className="mt-4 text-sm text-mist">
+          <h1 className="mt-2 text-3xl font-bold text-charcoal sm:text-4xl">{room.name}</h1>
+          <p className="mt-1 text-slate">{room.property}</p>
+          <p className="mt-4 text-sm text-slate">
             Select a marker to explore an object in its place.
           </p>
         </header>
@@ -85,10 +85,10 @@ export function SpatialView() {
               type="button"
               onClick={() => selectRoom(r.id)}
               aria-pressed={r.id === roomId}
-              className={`shrink-0 snap-start rounded-full border px-4 py-1.5 text-sm font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ice ${
+              className={`shrink-0 snap-start rounded-full border px-4 py-1.5 text-sm font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-berry ${
                 r.id === roomId
                   ? 'border-berry bg-berry text-ice'
-                  : 'border-mist/40 text-mist hover:border-ice hover:text-ice'
+                  : 'border-mist text-slate hover:border-charcoal hover:text-charcoal'
               }`}
             >
               {r.name}
@@ -100,7 +100,7 @@ export function SpatialView() {
           <RoomView room={room} selectedId={selected?.id ?? null} onSelect={selectObject} />
         </main>
 
-        <footer className="border-t border-slate px-6 py-6 text-center text-xs text-mist">
+        <footer className="border-t border-mist px-6 py-6 text-center text-xs text-slate">
           <p>
             Object images and records: National Trust for Scotland. Licensed under CC BY unless
             stated.

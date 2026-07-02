@@ -16,7 +16,7 @@ export function ObjectCard({ object }: ObjectCardProps) {
   return (
     <a
       href={object.detailUrl}
-      className="group flex flex-col overflow-hidden rounded-lg bg-air text-charcoal shadow-md transition-shadow hover:shadow-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ice"
+      className="group flex flex-col overflow-hidden rounded-lg border border-mist bg-ice text-charcoal shadow-sm transition-shadow hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-berry"
     >
       <img
         src={object.image ?? placeholderImage}

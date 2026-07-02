@@ -14,9 +14,9 @@ export function Hotspot({ object, active, onSelect }: HotspotProps) {
       aria-label={`View ${object.title}`}
       aria-pressed={active}
       title={object.title}
-      // Button box is the same size as the dot and its centre sits on the
-      // hotspot coordinate, so both dot and ping stay concentric.
-      className="group absolute grid h-4 w-4 -translate-x-1/2 -translate-y-1/2 cursor-pointer place-items-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ice"
+      // 44x44 hit area (WCAG 2.5.8 target size) centred on the hotspot
+      // coordinate; the dot and ping stack concentric inside it.
+      className="group absolute grid h-11 w-11 -translate-x-1/2 -translate-y-1/2 cursor-pointer place-items-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ice"
       style={{ left: `${object.hotspot.x}%`, top: `${object.hotspot.y}%` }}
     >
       {/* pulsing ring, centred on the dot via col-start/row-start stacking */}

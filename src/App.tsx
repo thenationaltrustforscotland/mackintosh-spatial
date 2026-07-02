@@ -1,28 +1,57 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { ObjectPanel } from './components/ObjectPanel'
 import { RoomView } from './components/RoomView'
 import { rooms } from './data/rooms'
 
+/** Parse `#/roomId/objectId` from the URL hash. */
+function parseHash(): { roomId: string; objectId: string | null } {
+  const parts = window.location.hash.replace(/^#\/?/, '').split('/').filter(Boolean)
+  const roomId = rooms.some((r) => r.id === parts[0]) ? parts[0] : rooms[0].id
+  const objectId = parts[1] ?? null
+  return { roomId, objectId }
+}
+
 function App() {
-  const [roomId, setRoomId] = useState(rooms[0].id)
-  const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [{ roomId, objectId }, setState] = useState(parseHash)
 
   const room = rooms.find((r) => r.id === roomId) ?? rooms[0]
-  const selected = room.objects.find((o) => o.id === selectedId) ?? null
+  const objectIndex = room.objects.findIndex((o) => o.id === objectId)
+  const selected = objectIndex >= 0 ? room.objects[objectIndex] : null
+
+  // Keep app state in sync with browser navigation (back/forward, edits).
+  useEffect(() => {
+    const onHashChange = () => setState(parseHash())
+    window.addEventListener('hashchange', onHashChange)
+    return () => window.removeEventListener('hashchange', onHashChange)
+  }, [])
+
+  // Push URL updates; hashchange listener feeds them back into state.
+  const navigate = useCallback((nextRoom: string, nextObject: string | null) => {
+    window.location.hash = nextObject ? `#/${nextRoom}/${nextObject}` : `#/${nextRoom}`
+  }, [])
+
+  const selectRoom = (id: string) => navigate(id, null)
+  const selectObject = (id: string) => navigate(roomId, id)
+  const closePanel = useCallback(() => navigate(roomId, null), [navigate, roomId])
+
+  // Step through objects within the current room (wraps around).
+  const stepObject = useCallback(
+    (delta: number) => {
+      if (objectIndex < 0) return
+      const next = (objectIndex + delta + room.objects.length) % room.objects.length
+      navigate(roomId, room.objects[next].id)
+    },
+    [objectIndex, room.objects, navigate, roomId],
+  )
 
   // Escape closes the panel.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setSelectedId(null)
+      if (e.key === 'Escape') closePanel()
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [])
-
-  const selectRoom = (id: string) => {
-    setRoomId(id)
-    setSelectedId(null)
-  }
+  }, [closePanel])
 
   return (
     <div className="flex min-h-full flex-col bg-charcoal text-air">
@@ -33,23 +62,26 @@ function App() {
         Skip to room
       </a>
 
-      <header className="px-6 pt-8 pb-4 text-center">
+      <header className="px-4 pt-6 pb-3 text-center sm:px-6 sm:pt-8 sm:pb-4">
         <p className="text-sm font-bold tracking-[0.3em] text-gold uppercase">
           Mackintosh Illuminated
         </p>
-        <h1 className="mt-2 text-4xl font-bold">{room.name}</h1>
+        <h1 className="mt-2 text-3xl font-bold sm:text-4xl">{room.name}</h1>
         <p className="mt-1 text-mist">{room.property}</p>
         <p className="mt-4 text-sm text-mist">Select a marker to explore an object in its place.</p>
       </header>
 
-      <nav aria-label="Rooms" className="flex flex-wrap justify-center gap-2 px-6 pb-6">
+      <nav
+        aria-label="Rooms"
+        className="flex snap-x gap-2 overflow-x-auto px-4 pb-5 sm:flex-wrap sm:justify-center sm:px-6 sm:pb-6"
+      >
         {rooms.map((r) => (
           <button
             key={r.id}
             type="button"
             onClick={() => selectRoom(r.id)}
             aria-pressed={r.id === roomId}
-            className={`rounded-full border px-4 py-1.5 text-sm font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ice ${
+            className={`shrink-0 snap-start rounded-full border px-4 py-1.5 text-sm font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ice ${
               r.id === roomId
                 ? 'border-berry bg-berry text-ice'
                 : 'border-mist/40 text-mist hover:border-ice hover:text-ice'
@@ -60,11 +92,18 @@ function App() {
         ))}
       </nav>
 
-      <main id="room" className="flex-1 px-6 pb-12">
-        <RoomView room={room} selectedId={selectedId} onSelect={setSelectedId} />
+      <main id="room" className="flex-1 px-4 pb-12 sm:px-6">
+        <RoomView room={room} selectedId={selected?.id ?? null} onSelect={selectObject} />
       </main>
 
-      <ObjectPanel object={selected} onClose={() => setSelectedId(null)} />
+      <ObjectPanel
+        object={selected}
+        onClose={closePanel}
+        onPrev={() => stepObject(-1)}
+        onNext={() => stepObject(1)}
+        position={objectIndex >= 0 ? objectIndex + 1 : 0}
+        total={room.objects.length}
+      />
 
       <footer className="border-t border-slate px-6 py-6 text-center text-xs text-mist">
         <p>

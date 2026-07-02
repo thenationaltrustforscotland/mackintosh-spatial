@@ -59,100 +59,115 @@ export function ObjectPanel({
   }
 
   return (
-    <aside
-      role="dialog"
-      aria-modal={open}
-      aria-hidden={!open}
-      aria-label={object ? `${object.title} details` : undefined}
-      ref={panelRef}
-      onKeyDown={onKeyDown}
-      // Desktop: right-hand drawer. Mobile: bottom sheet (max 85vh).
-      className={`fixed z-20 flex flex-col bg-air text-charcoal shadow-2xl transition-transform duration-300 max-sm:inset-x-0 max-sm:bottom-0 max-sm:max-h-[85vh] max-sm:rounded-t-2xl sm:top-0 sm:right-0 sm:h-full sm:w-full sm:max-w-md ${
-        open
-          ? 'translate-y-0 sm:translate-x-0'
-          : 'pointer-events-none translate-y-full sm:translate-x-full sm:translate-y-0'
-      }`}
-    >
-      {object && (
-        <>
-          {/* Fixed header: counter + close */}
-          <div className="flex items-center justify-between px-6 pt-6 sm:px-8">
-            <p className="text-xs font-bold text-slate">
-              {position} of {total}
-            </p>
-            <button
-              ref={closeRef}
-              type="button"
-              onClick={onClose}
-              aria-label="Close object details"
-              className="rounded-full px-3 py-1 text-2xl text-slate hover:text-berry focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-berry"
-            >
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
+    <>
+      {/* Dimmed backdrop: signals the panel is modal and closes it on click. */}
+      <button
+        type="button"
+        tabIndex={-1}
+        aria-hidden="true"
+        onClick={onClose}
+        className={`fixed inset-0 z-10 bg-charcoal/50 transition-opacity duration-300 ${
+          open ? 'opacity-100' : 'pointer-events-none opacity-0'
+        }`}
+      />
 
-          {/* Scrollable content */}
-          <div className="flex-1 overflow-y-auto px-6 pb-6 sm:px-8">
-            <img
-              src={object.image ?? placeholderImage}
-              alt={object.image ? object.title : `Placeholder for ${object.title}, image to follow`}
-              className="mt-2 mb-6 aspect-[4/3] w-full rounded object-cover"
-            />
-
-            <p className="text-sm font-bold tracking-widest text-heather uppercase">
-              {object.maker}
-            </p>
-            <h2 className="mt-1 text-2xl leading-tight font-bold text-charcoal sm:text-3xl">
-              {object.title}
-            </h2>
-            <p className="mt-1 text-sm text-slate">{object.date}</p>
-
-            <p className="mt-6 leading-relaxed text-charcoal">{object.description}</p>
-
-            <dl className="mt-8 space-y-3 border-t border-mist pt-6 text-sm">
-              <div className="flex justify-between gap-4">
-                <dt className="text-slate">Accession</dt>
-                <dd className="text-charcoal">{object.accession}</dd>
-              </div>
-              <div className="flex justify-between gap-4">
-                <dt className="text-slate">Credit</dt>
-                <dd className="text-right text-charcoal">{object.credit}</dd>
-              </div>
-              <div className="flex justify-between gap-4">
-                <dt className="text-slate">Licence</dt>
-                <dd className="text-charcoal">{object.licence}</dd>
-              </div>
-            </dl>
-          </div>
-
-          {/* Pinned action bar: prev/next + CTA */}
-          <div className="border-t border-mist bg-air px-6 py-4 sm:px-8">
-            <div className="flex justify-between gap-3">
+      <aside
+        role="dialog"
+        aria-modal={open}
+        aria-hidden={!open}
+        aria-label={object ? `${object.title} details` : undefined}
+        ref={panelRef}
+        onKeyDown={onKeyDown}
+        // Desktop: right-hand drawer. Mobile: bottom sheet (max 85vh).
+        className={`fixed z-20 flex flex-col bg-air text-charcoal shadow-2xl transition-transform duration-300 max-sm:inset-x-0 max-sm:bottom-0 max-sm:max-h-[85vh] max-sm:rounded-t-2xl sm:top-0 sm:right-0 sm:h-full sm:w-full sm:max-w-md ${
+          open
+            ? 'translate-y-0 sm:translate-x-0'
+            : 'pointer-events-none translate-y-full sm:translate-x-full sm:translate-y-0'
+        }`}
+      >
+        {object && (
+          <>
+            {/* Fixed header: counter + close */}
+            <div className="flex items-center justify-between px-6 pt-6 sm:px-8">
+              <p className="text-xs font-bold text-slate">
+                {position} of {total}
+              </p>
               <button
+                ref={closeRef}
                 type="button"
-                onClick={onPrev}
-                className="inline-flex items-center gap-1 rounded-full border border-mist px-4 py-2 text-sm font-bold text-charcoal hover:border-charcoal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal"
+                onClick={onClose}
+                aria-label="Close object details"
+                className="rounded-full px-3 py-1 text-2xl text-slate hover:text-berry focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-berry"
               >
-                <span aria-hidden="true">←</span> Previous
-              </button>
-              <button
-                type="button"
-                onClick={onNext}
-                className="inline-flex items-center gap-1 rounded-full border border-mist px-4 py-2 text-sm font-bold text-charcoal hover:border-charcoal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal"
-              >
-                Next <span aria-hidden="true">→</span>
+                <span aria-hidden="true">×</span>
               </button>
             </div>
-            <a
-              href={object.detailUrl}
-              className="mt-3 flex items-center justify-center gap-2 rounded-full bg-berry px-6 py-3 font-bold text-ice transition-colors hover:bg-heather focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal"
-            >
-              View full object record
-              <span aria-hidden="true">→</span>
-            </a>
-          </div>
-        </>
-      )}
-    </aside>
+
+            {/* Scrollable content */}
+            <div className="flex-1 overflow-y-auto px-6 pb-6 sm:px-8">
+              <img
+                src={object.image ?? placeholderImage}
+                alt={
+                  object.image ? object.title : `Placeholder for ${object.title}, image to follow`
+                }
+                className="mt-2 mb-6 aspect-[4/3] w-full rounded object-cover"
+              />
+
+              <p className="text-sm font-bold tracking-widest text-heather uppercase">
+                {object.maker}
+              </p>
+              <h2 className="mt-1 text-2xl leading-tight font-bold text-charcoal sm:text-3xl">
+                {object.title}
+              </h2>
+              <p className="mt-1 text-sm text-slate">{object.date}</p>
+
+              <p className="mt-6 leading-relaxed text-charcoal">{object.description}</p>
+
+              <dl className="mt-8 space-y-3 border-t border-mist pt-6 text-sm">
+                <div className="flex justify-between gap-4">
+                  <dt className="text-slate">Accession</dt>
+                  <dd className="text-charcoal">{object.accession}</dd>
+                </div>
+                <div className="flex justify-between gap-4">
+                  <dt className="text-slate">Credit</dt>
+                  <dd className="text-right text-charcoal">{object.credit}</dd>
+                </div>
+                <div className="flex justify-between gap-4">
+                  <dt className="text-slate">Licence</dt>
+                  <dd className="text-charcoal">{object.licence}</dd>
+                </div>
+              </dl>
+            </div>
+
+            {/* Pinned action bar: prev/next + CTA */}
+            <div className="border-t border-mist bg-air px-6 py-4 sm:px-8">
+              <div className="flex justify-between gap-3">
+                <button
+                  type="button"
+                  onClick={onPrev}
+                  className="inline-flex items-center gap-1 rounded-full border border-mist px-4 py-2 text-sm font-bold text-charcoal hover:border-charcoal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal"
+                >
+                  <span aria-hidden="true">←</span> Previous
+                </button>
+                <button
+                  type="button"
+                  onClick={onNext}
+                  className="inline-flex items-center gap-1 rounded-full border border-mist px-4 py-2 text-sm font-bold text-charcoal hover:border-charcoal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal"
+                >
+                  Next <span aria-hidden="true">→</span>
+                </button>
+              </div>
+              <a
+                href={object.detailUrl}
+                className="mt-3 flex items-center justify-center gap-2 rounded-full bg-berry px-6 py-3 font-bold text-ice transition-colors hover:bg-heather focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal"
+              >
+                View full object record
+                <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </>
+        )}
+      </aside>
+    </>
   )
 }

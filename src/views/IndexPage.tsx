@@ -44,12 +44,12 @@ export function IndexPage() {
                 href={p.href}
                 className="group flex h-full flex-col rounded-xl border border-slate bg-slate/20 p-6 transition-colors hover:border-berry focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ice"
               >
-                <h2 className="text-xl font-bold group-hover:text-berry">{p.title}</h2>
+                <h2 className="text-xl font-bold group-hover:text-gold">{p.title}</h2>
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-mist">{p.blurb}</p>
                 <p className="mt-4 border-t border-slate pt-4 text-xs text-mist">
                   <span className="font-bold text-gold">Brief:</span> {p.brief}
                 </p>
-                <span className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-berry">
+                <span className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-gold">
                   Open prototype <span aria-hidden="true">→</span>
                 </span>
               </a>

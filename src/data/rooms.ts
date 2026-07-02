@@ -2,7 +2,7 @@ import bedroom from '../assets/rooms/bedroom.avif'
 import drawingRoom from '../assets/rooms/drawing-room.avif'
 import hall from '../assets/rooms/hall.avif'
 import windowSeat from '../assets/rooms/window-seat.avif'
-import type { Room } from './types'
+import type { BrowseObject, Room } from './types'
 
 /** Object records without detailUrl (derived below from id). */
 type RawObject = Omit<Room['objects'][number], 'detailUrl'>
@@ -30,6 +30,8 @@ const rawRooms: RawRoom[] = [
         credit: 'National Trust for Scotland, The Hill House',
         licence: 'CC BY',
         hotspot: { x: 21, y: 74 },
+        makerKey: 'mackintosh',
+        tags: ['furniture', 'oak', 'geometry'],
       },
       {
         id: 'hh-hall-table',
@@ -42,6 +44,8 @@ const rawRooms: RawRoom[] = [
         credit: 'National Trust for Scotland, The Hill House',
         licence: 'CC BY',
         hotspot: { x: 88, y: 66 },
+        makerKey: 'mackintosh',
+        tags: ['furniture', 'geometry', 'lattice'],
       },
       {
         id: 'hh-hall-lantern',
@@ -54,6 +58,8 @@ const rawRooms: RawRoom[] = [
         credit: 'National Trust for Scotland, The Hill House',
         licence: 'CC BY',
         hotspot: { x: 53, y: 15 },
+        makerKey: 'mackintosh',
+        tags: ['lighting', 'metalwork', 'geometry'],
       },
       {
         id: 'hh-hall-panels',
@@ -66,6 +72,8 @@ const rawRooms: RawRoom[] = [
         credit: 'National Trust for Scotland, The Hill House',
         licence: 'CC BY',
         hotspot: { x: 6, y: 30 },
+        makerKey: 'joint',
+        tags: ['stencil', 'rose', 'decorative-scheme'],
       },
     ],
   },
@@ -87,6 +95,8 @@ const rawRooms: RawRoom[] = [
         credit: 'National Trust for Scotland, The Hill House',
         licence: 'CC BY',
         hotspot: { x: 26, y: 40 },
+        makerKey: 'macdonald',
+        tags: ['gesso', 'figures', 'rose', 'decorative-scheme'],
       },
       {
         id: 'hh-bed-wardrobe',
@@ -99,6 +109,8 @@ const rawRooms: RawRoom[] = [
         credit: 'National Trust for Scotland, The Hill House',
         licence: 'CC BY',
         hotspot: { x: 10, y: 33 },
+        makerKey: 'mackintosh',
+        tags: ['furniture', 'built-in', 'geometry'],
       },
       {
         id: 'hh-bed-chair',
@@ -111,6 +123,8 @@ const rawRooms: RawRoom[] = [
         credit: 'National Trust for Scotland, The Hill House',
         licence: 'CC BY',
         hotspot: { x: 15, y: 62 },
+        makerKey: 'mackintosh',
+        tags: ['furniture', 'ladderback', 'lattice'],
       },
     ],
   },
@@ -132,6 +146,8 @@ const rawRooms: RawRoom[] = [
         credit: 'National Trust for Scotland, The Hill House',
         licence: 'CC BY',
         hotspot: { x: 16, y: 45 },
+        makerKey: 'mackintosh',
+        tags: ['furniture', 'ladderback', 'upholstery'],
       },
       {
         id: 'hh-dr-table',
@@ -144,6 +160,8 @@ const rawRooms: RawRoom[] = [
         credit: 'National Trust for Scotland, The Hill House',
         licence: 'CC BY',
         hotspot: { x: 50, y: 66 },
+        makerKey: 'mackintosh',
+        tags: ['furniture', 'geometry', 'lattice'],
       },
       {
         id: 'hh-dr-window',
@@ -156,6 +174,8 @@ const rawRooms: RawRoom[] = [
         credit: 'National Trust for Scotland, The Hill House',
         licence: 'CC BY',
         hotspot: { x: 50, y: 42 },
+        makerKey: 'mackintosh',
+        tags: ['built-in', 'window', 'rose'],
       },
     ],
   },
@@ -177,6 +197,8 @@ const rawRooms: RawRoom[] = [
         credit: 'National Trust for Scotland, The Hill House',
         licence: 'CC BY',
         hotspot: { x: 30, y: 68 },
+        makerKey: 'mackintosh',
+        tags: ['built-in', 'upholstery', 'rose'],
       },
       {
         id: 'hh-ws-curtains',
@@ -189,6 +211,8 @@ const rawRooms: RawRoom[] = [
         credit: 'National Trust for Scotland, The Hill House',
         licence: 'CC BY',
         hotspot: { x: 22, y: 28 },
+        makerKey: 'macdonald',
+        tags: ['textile', 'stencil', 'geometry'],
       },
       {
         id: 'hh-ws-stencil',
@@ -201,6 +225,8 @@ const rawRooms: RawRoom[] = [
         credit: 'National Trust for Scotland, The Hill House',
         licence: 'CC BY',
         hotspot: { x: 84, y: 40 },
+        makerKey: 'joint',
+        tags: ['stencil', 'rose', 'decorative-scheme'],
       },
     ],
   },
@@ -215,3 +241,41 @@ export const rooms: Room[] = rawRooms.map((room) => ({
     detailUrl: `/collections/object/${object.id}`,
   })),
 }))
+
+/** Every object flattened out of its room, for cross-room browsing. */
+export const browseObjects: BrowseObject[] = rooms.flatMap((room) =>
+  room.objects.map((object) => ({ ...object, roomId: room.id, roomName: room.name })),
+)
+
+/** Curated discovery trails. `match` decides membership from an object. */
+export const trails: {
+  id: string
+  label: string
+  blurb: string
+  match: (o: BrowseObject) => boolean
+}[] = [
+  {
+    id: 'macdonald',
+    label: 'Margaret Macdonald',
+    blurb: 'Work by Margaret Macdonald, and the schemes she shaped with Mackintosh.',
+    match: (o) => o.makerKey === 'macdonald' || o.makerKey === 'joint',
+  },
+  {
+    id: 'geometry',
+    label: 'Geometry & the grid',
+    blurb: 'The square, the lattice, the cube: Mackintosh’s geometric vocabulary.',
+    match: (o) => o.tags.includes('geometry') || o.tags.includes('lattice'),
+  },
+  {
+    id: 'rose',
+    label: 'The rose motif',
+    blurb: 'The stylised rose that recurs across the Hill House interiors.',
+    match: (o) => o.tags.includes('rose'),
+  },
+  {
+    id: 'built-in',
+    label: 'Built for the house',
+    blurb: 'Fitted furniture and built-in pieces made for these rooms.',
+    match: (o) => o.tags.includes('built-in'),
+  },
+]

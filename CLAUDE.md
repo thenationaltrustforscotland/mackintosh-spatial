@@ -4,10 +4,18 @@ Guidance for Claude Code (and other AI assistants) working in this repo.
 
 ## What this is
 
-A throwaway prototype (spike) for the National Trust for Scotland's _Mackintosh
-Illuminated_ project. It demonstrates a "spatial" way of presenting a digitised
-collection: room photos with clickable hotspots that open object detail panels in
-place. Mock data only. Not production code.
+A gallery of throwaway prototypes for the National Trust for Scotland's
+_Mackintosh Illuminated_ project, exploring ways to present a digitised
+collection. Mock data only. Not production code.
+
+`src/App.tsx` is a tiny hash router keyed on the first path segment:
+
+- `#/` → `IndexPage` (lists the prototypes)
+- `#/spatial[/room/object]` → `SpatialView` (room photos + object hotspots)
+- `#/browse` → `BrowseView` ("surprise me" + themed trails)
+
+Views live in `src/views/`, shared pieces in `src/components/`. Add a prototype by
+adding a view, a route branch in `App.tsx`, and a card in `IndexPage`.
 
 ## Stack
 

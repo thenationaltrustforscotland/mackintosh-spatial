@@ -11,11 +11,21 @@ code.
 
 ## What it does
 
+A small gallery of prototypes, reached from an index page (`#/`):
+
+**Spatial** (`#/spatial`) — objects in place:
+
 - Four Hill House interiors (Hall, Main Bedroom, Drawing Room, Window Seat Alcove)
 - Clickable hotspots placed over objects in each room
 - Slide-in detail panel per object (image, maker, description, accession, credit,
   licence) with a call-to-action linking to the full object record
 - Room switcher, keyboard accessible, WCAG AA contrast
+
+**Discover** (`#/browse`) — browsing without a search box:
+
+- A random "surprise me" object with a shuffle
+- Themed trails (Margaret Macdonald, the rose motif, geometry, built-in pieces)
+  that filter a grid of every object
 
 ## Stack
 
@@ -56,12 +66,16 @@ Deployed to GitHub Pages on every push to `main` via
 
 ## Layout
 
-| Path                         | Purpose                               |
-| ---------------------------- | ------------------------------------- |
-| `src/App.tsx`                | Room switcher, header, footer, layout |
-| `src/components/RoomView`    | Room image + blurhash + hotspot overlay |
-| `src/components/Hotspot`     | A single clickable marker             |
-| `src/components/ObjectPanel` | Slide-in object detail panel          |
-| `src/data/rooms.ts`          | Mock room + object fixtures           |
-| `src/data/types.ts`          | `Room` / `CollectionObject` shapes    |
-| `src/assets/rooms/`          | Hill House interior photos            |
+| Path                         | Purpose                                       |
+| ---------------------------- | --------------------------------------------- |
+| `src/App.tsx`                | Hash router: index / spatial / browse         |
+| `src/views/IndexPage`        | Prototype gallery landing page                |
+| `src/views/SpatialView`      | Spatial prototype (rooms + hotspots + panel)  |
+| `src/views/BrowseView`       | Discover prototype (surprise me + trails)     |
+| `src/components/RoomView`    | Room image + blurhash + hotspot overlay       |
+| `src/components/Hotspot`     | A single clickable marker                     |
+| `src/components/ObjectPanel` | Slide-in object detail panel                  |
+| `src/components/ObjectCard`  | Object thumbnail card used in Browse          |
+| `src/data/rooms.ts`          | Mock fixtures, flattened objects, trails      |
+| `src/data/types.ts`          | `Room` / `CollectionObject` / `BrowseObject`  |
+| `src/assets/rooms/`          | Hill House interior photos                    |

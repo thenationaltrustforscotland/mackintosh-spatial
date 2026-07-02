@@ -17,6 +17,16 @@ export interface CollectionObject {
   detailUrl: string
   /** Hotspot position as a percentage of the room image (0-100). */
   hotspot: { x: number; y: number }
+  /** Coarse maker attribution key, used to build 'by maker' trails. */
+  makerKey: 'mackintosh' | 'macdonald' | 'joint' | 'blackie'
+  /** Motif/theme tags, used to build discovery trails. */
+  tags: string[]
+}
+
+/** An object flattened out of its room, for cross-room browsing prototypes. */
+export interface BrowseObject extends CollectionObject {
+  roomId: string
+  roomName: string
 }
 
 export interface Room {

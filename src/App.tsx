@@ -57,44 +57,61 @@ function App() {
     <div className="flex min-h-full flex-col bg-charcoal text-air">
       <a
         href="#room"
-        className="sr-only rounded bg-ice px-4 py-2 font-bold text-charcoal focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-30"
+        className="sr-only rounded bg-ice px-4 py-2 font-bold text-charcoal focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-30 focus:h-auto focus:w-auto focus:overflow-visible focus:whitespace-normal"
       >
         Skip to room
       </a>
 
-      <header className="px-4 pt-6 pb-3 text-center sm:px-6 sm:pt-8 sm:pb-4">
-        <p className="text-sm font-bold tracking-[0.3em] text-gold uppercase">
-          Mackintosh Illuminated
-        </p>
-        <h1 className="mt-2 text-3xl font-bold sm:text-4xl">{room.name}</h1>
-        <p className="mt-1 text-mist">{room.property}</p>
-        <p className="mt-4 text-sm text-mist">Select a marker to explore an object in its place.</p>
-      </header>
+      {/* Background is inert while the dialog is open so AT and Tab stay
+          within the panel (aria-modal alone doesn't remove background focus). */}
+      <div className="contents" inert={selected !== null ? true : undefined}>
+        <header className="px-4 pt-6 pb-3 text-center sm:px-6 sm:pt-8 sm:pb-4">
+          <p className="text-sm font-bold tracking-[0.3em] text-gold uppercase">
+            Mackintosh Illuminated
+          </p>
+          <h1 className="mt-2 text-3xl font-bold sm:text-4xl">{room.name}</h1>
+          <p className="mt-1 text-mist">{room.property}</p>
+          <p className="mt-4 text-sm text-mist">
+            Select a marker to explore an object in its place.
+          </p>
+        </header>
 
-      <nav
-        aria-label="Rooms"
-        className="flex snap-x gap-2 overflow-x-auto px-4 pb-5 sm:flex-wrap sm:justify-center sm:px-6 sm:pb-6"
-      >
-        {rooms.map((r) => (
-          <button
-            key={r.id}
-            type="button"
-            onClick={() => selectRoom(r.id)}
-            aria-pressed={r.id === roomId}
-            className={`shrink-0 snap-start rounded-full border px-4 py-1.5 text-sm font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ice ${
-              r.id === roomId
-                ? 'border-berry bg-berry text-ice'
-                : 'border-mist/40 text-mist hover:border-ice hover:text-ice'
-            }`}
-          >
-            {r.name}
-          </button>
-        ))}
-      </nav>
+        <nav
+          aria-label="Rooms"
+          className="flex snap-x gap-2 overflow-x-auto px-4 pb-5 sm:flex-wrap sm:justify-center sm:px-6 sm:pb-6"
+        >
+          {rooms.map((r) => (
+            <button
+              key={r.id}
+              type="button"
+              onClick={() => selectRoom(r.id)}
+              aria-pressed={r.id === roomId}
+              className={`shrink-0 snap-start rounded-full border px-4 py-1.5 text-sm font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ice ${
+                r.id === roomId
+                  ? 'border-berry bg-berry text-ice'
+                  : 'border-mist/40 text-mist hover:border-ice hover:text-ice'
+              }`}
+            >
+              {r.name}
+            </button>
+          ))}
+        </nav>
 
-      <main id="room" className="flex-1 px-4 pb-12 sm:px-6">
-        <RoomView room={room} selectedId={selected?.id ?? null} onSelect={selectObject} />
-      </main>
+        <main id="room" className="flex-1 px-4 pb-12 sm:px-6">
+          <RoomView room={room} selectedId={selected?.id ?? null} onSelect={selectObject} />
+        </main>
+
+        <footer className="border-t border-slate px-6 py-6 text-center text-xs text-mist">
+          <p>
+            Object images and records: National Trust for Scotland. Licensed under CC BY unless
+            stated.
+          </p>
+          <p className="mt-2">
+            Made possible with The National Lottery Heritage Fund. Thanks to National Lottery
+            players.
+          </p>
+        </footer>
+      </div>
 
       <ObjectPanel
         object={selected}
@@ -104,16 +121,6 @@ function App() {
         position={objectIndex >= 0 ? objectIndex + 1 : 0}
         total={room.objects.length}
       />
-
-      <footer className="border-t border-slate px-6 py-6 text-center text-xs text-mist">
-        <p>
-          Object images and records: National Trust for Scotland. Licensed under CC BY unless
-          stated.
-        </p>
-        <p className="mt-2">
-          Made possible with The National Lottery Heritage Fund. Thanks to National Lottery players.
-        </p>
-      </footer>
     </div>
   )
 }

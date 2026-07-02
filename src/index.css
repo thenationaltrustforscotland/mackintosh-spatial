@@ -33,3 +33,21 @@ body,
 body {
   font-family: var(--font-sans);
 }
+
+/* Vestibular safety: cut animation/transition for users who ask for it.
+   Stops the hotspot ping pulsing indefinitely. !important is required here to
+   override Tailwind's animation utilities, per the WCAG-recommended reset. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    /* biome-ignore lint/complexity/noImportantStyles: reduced-motion reset must win */
+    animation-duration: 0.01ms !important;
+    /* biome-ignore lint/complexity/noImportantStyles: reduced-motion reset must win */
+    animation-iteration-count: 1 !important;
+    /* biome-ignore lint/complexity/noImportantStyles: reduced-motion reset must win */
+    transition-duration: 0.01ms !important;
+    /* biome-ignore lint/complexity/noImportantStyles: reduced-motion reset must win */
+    scroll-behavior: auto !important;
+  }
+}

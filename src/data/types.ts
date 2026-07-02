@@ -25,5 +25,7 @@ export interface Room {
   property: string
   /** Room image URL. Data URI in the spike; a real asset URL later. */
   image: string
+  /** Blurhash of the room image, shown while the full image loads. */
+  blurhash: string
   objects: CollectionObject[]
 }

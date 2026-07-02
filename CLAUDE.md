@@ -56,6 +56,9 @@ verify changes is fine.
   nudge them when images change.
 - Object images are placeholders (`src/data/placeholder.ts`); room photos are real
   Hill House interiors and are © National Trust for Scotland.
+- Each room has a `blurhash` shown while its photo loads (decoded to a canvas in
+  `RoomView`). Regenerate after changing room images with `npm run blurhashes`
+  (`scripts/generate-blurhashes.mjs`) and paste the output into `rooms.ts`.
 
 ## Hosting
 

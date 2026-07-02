@@ -35,6 +35,7 @@ npm run build       # type-check + production build
 npm run typecheck   # tsc --noEmit
 npm run lint        # biome check
 npm run lint:fix    # biome check --write
+npm run blurhashes  # regenerate room-image blurhashes (paste into rooms.ts)
 ```
 
 ## Hosting
@@ -58,7 +59,7 @@ Deployed to GitHub Pages on every push to `main` via
 | Path                         | Purpose                               |
 | ---------------------------- | ------------------------------------- |
 | `src/App.tsx`                | Room switcher, header, footer, layout |
-| `src/components/RoomView`    | Room image + hotspot overlay          |
+| `src/components/RoomView`    | Room image + blurhash + hotspot overlay |
 | `src/components/Hotspot`     | A single clickable marker             |
 | `src/components/ObjectPanel` | Slide-in object detail panel          |
 | `src/data/rooms.ts`          | Mock room + object fixtures           |

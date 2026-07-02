@@ -17,6 +17,7 @@ const rawRooms: RawRoom[] = [
     name: 'The Hall',
     property: 'The Hill House',
     image: hall,
+    blurhash: 'LFFYS;xBIp%L9EjE~WIBnOxvD*j]',
     objects: [
       {
         id: 'hh-hall-bench',
@@ -73,6 +74,7 @@ const rawRooms: RawRoom[] = [
     name: 'The Main Bedroom',
     property: 'The Hill House',
     image: bedroom,
+    blurhash: 'L8KKQSRO00V@~VMy-:afNGkCS1oe',
     objects: [
       {
         id: 'hh-bed-panels',
@@ -117,6 +119,7 @@ const rawRooms: RawRoom[] = [
     name: 'The Drawing Room',
     property: 'The Hill House',
     image: drawingRoom,
+    blurhash: 'LMF=Ej%LIVxt~An%E2RjIAaeozWV',
     objects: [
       {
         id: 'hh-dr-chairs',
@@ -161,6 +164,7 @@ const rawRooms: RawRoom[] = [
     name: 'Window Seat Alcove',
     property: 'The Hill House',
     image: windowSeat,
+    blurhash: 'LTOMd0-:tS-p?^tljFWWDNa_R%jF',
     objects: [
       {
         id: 'hh-ws-seat',

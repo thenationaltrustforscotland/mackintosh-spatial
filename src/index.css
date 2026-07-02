@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+/* NTS brand palette + type. Values from the main craft site
+   (src/assets/scss/util/_variables.scss). soleil is the NTS primary
+   typeface; not bundled in this spike, so we fall back to a close
+   humanist-sans stack. Maxwell (display) intentionally not used. */
+@theme {
+  /* neutrals */
+  --color-ice: #ffffff;
+  --color-air: #f5f5f1;
+  --color-mist: #dad5d3;
+  --color-granite: #969699;
+  --color-slate: #4f5054;
+  --color-charcoal: #262525;
+
+  /* brand accents */
+  --color-heather: #6c1862;
+  --color-berry: #cf007d;
+  --color-forest: #00857e;
+  --color-gold: #f7a700;
+  --color-redrose: #eb0a19;
+
+  --font-sans: soleil, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+}
